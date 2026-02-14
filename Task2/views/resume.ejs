@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= person.name %> - CV
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="navigation">
+            <a href="/" class="back-btn">⬅ Back to Team</a>
+        </div>
+
+        <header>
+            <div class="photo-container">
+                <img src="<%= person.photo %>" alt="<%= person.name %>" title="<%= person.name %>">
+            </div>
+            <div class="header-info">
+                <h1>
+                    <%= person.name %>
+                </h1>
+
+                <% if (person.role) { %>
+                    <p class="role">
+                        <%= person.role %>
+                    </p>
+                    <% } %>
+
+                        <div class="contact-info">
+                            <% if(person.location) { %> <span>📍 <%= person.location %></span>
+                                <% } %>
+                                    <% if(person.phone) { %> <span>📞 <%= person.phone %></span>
+                                        <% } %>
+                                            <% if(person.email) { %> <span>✉️ <%= person.email %></span>
+                                                <% } %>
+                        </div>
+
+                        <div class="links">
+                            <% if (person.socials) { %>
+                                <% person.socials.forEach(function(social) { %>
+                                    <a href="<%= social.link %>" target="_blank">
+                                        <%= social.name %>
+                                    </a>
+                                    <% }); %>
+                                        <% } %>
+                        </div>
+            </div>
+        </header>
+
+        <% if (person.profile) { %>
+            <section id="profile">
+                <h2>Profile</h2>
+                <p>
+                    <%= person.profile %>
+                </p>
+            </section>
+            <% } %>
+
+                <% if (person.skills) { %>
+                    <section id="skills">
+                        <h2>Technical Skills</h2>
+                        <ul>
+                            <% for (const [category, details] of Object.entries(person.skills)) { %>
+                                <li>
+                                    <span class="skill-category">
+                                        <%= category %>:
+                                    </span>
+                                    <%= details %>
+                                </li>
+                                <% } %>
+                        </ul>
+                    </section>
+                    <% } %>
+
+                        <% if (person.education && person.education.length> 0) { %>
+                            <section id="education">
+                                <h2>Education</h2>
+                                <ul>
+                                    <% person.education.forEach(function(edu) { %>
+                                        <li>
+                                            <strong>
+                                                <%= edu.institution %>
+                                            </strong>
+                                            <% if(edu.period) { %> <span class="date">
+                                                    <%= edu.period %>
+                                                </span>
+                                                <% } %>
+                                                    <br>
+                                                    <%= edu.details %>
+                                        </li>
+                                        <% }); %>
+                                </ul>
+                            </section>
+                            <% } %>
+
+                                <% if (person.achievements && person.achievements.length> 0) { %>
+                                    <section id="achievements">
+                                        <h2>Achievements & Projects</h2>
+                                        <ul>
+                                            <% person.achievements.forEach(function(achievement) { %>
+                                                <li>
+                                                    <%= achievement %>
+                                                </li>
+                                                <% }); %>
+                                        </ul>
+                                    </section>
+                                    <% } %>
+
+                                        <% if (person.courses && person.courses.length> 0) { %>
+                                            <section id="courses">
+                                                <h2>Courses</h2>
+                                                <ul>
+                                                    <% person.courses.forEach(function(course) { %>
+                                                        <li>
+                                                            <%= course.name %>
+                                                                <span class="date">
+                                                                    <%= course.period %>
+                                                                </span>
+                                                        </li>
+                                                        <% }); %>
+                                                </ul>
+                                            </section>
+                                            <% } %>
+
+                                                <% if (person.extra && person.extra.length) { %>
+                                                    <section id="extra">
+                                                        <h2>Extra-Curricular</h2>
+                                                        <ul>
+                                                            <% person.extra.forEach(function(extra) { %>
+                                                                <li>
+                                                                    <%= extra.name %>
+                                                                        <span class="date">
+                                                                            <%= extra.period %>
+                                                                        </span>
+                                                                </li>
+                                                                <% }); %>
+                                                        </ul>
+                                                    </section>
+                                                    <% } %>
+
+    </div>
+</body>
+
+</html>
