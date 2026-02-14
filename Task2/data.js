@@ -113,12 +113,67 @@ export default {
       {
         name: 'Full stack: react and java spring boot - the developer guide',
         period: '2023-2024',
-      }
+      },
     ],
     extra: [
       {
         name: 'Backend developer: FICE selection committee project',
         period: '2025-current',
+      },
+    ],
+  },
+  denys: {
+    id: 'denys',
+    name: 'Puchkov Denys',
+    role: 'Software Engineering Student',
+    photo: '/assets/denys.jpg',
+    location: 'Kyiv, Ukraine',
+    phone: '+380 68 033 57 77',
+    email: 'denispuchkov2105@gmail.com',
+    socials: [
+      { name: 'Telegram', link: 'https://t.me/denis_0721' },
+      {
+        name: 'LinkedIn',
+        link: 'https://www.linkedin.com/in/puchkov-denys',
+      },
+      { name: 'GitHub', link: 'https://github.com/DenysP21' },
+    ],
+    profile:
+      'Dedicated Software Engineering student and developer with a strong focus on Node.js. Experienced in building mobile and desktop applications using React Native and Electron, with a background in PostgreSQL database management via pgAdmin. Proactive, detail-oriented, and committed to effective team collaboration.',
+    skills: {
+      'JavaScript & Node.js':
+        'Core JS (ES6+), Express.js, EJS templates, npm, asynchronous programming',
+      'C++ Development':
+        'OOP principles, memory management, data structures, application logic',
+      'Mobile & Desktop':
+        'React Native for mobile apps, Electron for cross-platform desktop tools',
+      Databases:
+        'PostgreSQL, pgAdmin, relational schema design, SQL queries and optimization',
+      'Tools & Workflow': 'Git, GitHub, VS Code',
+    },
+    education: [
+      {
+        institution:
+          'National Technical University of Ukraine "Igor Sikorsky Kyiv Polytechnic Institute"',
+        period: 'Sep 2024 – Jun 2028',
+        details: 'B.Sc. Software Development (current, 2nd year)',
+      },
+      {
+        institution: 'Hryhoriy Tsekhmistrenko Lyceum No. 89',
+        period: 'Graduated May 2024',
+        details: 'Honors student, gold medalist. Kyiv.',
+      },
+    ],
+    courses: [
+      {
+        name: 'Linux administration and linux command line skills - Udemy',
+        period: '2025',
+      },
+    ],
+    extra: [
+      {
+        name: 'Volunteer work: production of camouflage nets for the Armed Forces of Ukraine',
+        period: '2022-2023',
       },
     ],
   },
