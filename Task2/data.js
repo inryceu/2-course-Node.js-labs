@@ -76,4 +76,50 @@ export default {
       },
     ],
   },
+  mykhailo: {
+    id: 'mykhailo',
+    name: 'Makutonin Mykhailo',
+    role: 'Software Engineering Student',
+    photo: '/assets/mykhailo.jpg',
+    location: 'Kyiv, Ukraine',
+    phone: '+380 99 27 333 44',
+    email: 'misha.makutonin@gmail.com',
+    socials: [
+      { name: 'Telegram', link: 'https://t.me/mmktnn' },
+      {
+        name: 'LinkedIn',
+        link: 'https://www.linkedin.com/in/mykhailo-makutonin-baa359366/',
+      },
+      { name: 'GitHub', link: 'https://github.com/StudentPP1' },
+    ],
+    profile:
+      'Software Engineering student and back-end developer with hand-on experience in Spring Boot, Hibernate, REST API, SQL/NoSQL databases, and a good understanding of algorithms and data structures. Responsible, collaborative, and eager to grow professionally.',
+    skills: {
+      Java: 'Java Core, Spring Boot, basic Spring Cloud, WebSocket, REST API, MongoDB/PostgreSQL, JWT, Hibernate ORM',
+      Python: 'Basics of scripting & web scraping, data analysis, OOP',
+      Databases: 'PostgreSQL, MySQL, MongoDB, schema design, queries, indexing',
+      DevOps: 'Docker, Kubernetes basics, GitHub Actions',
+      Tools: 'Git, GitHub, UML, Jira',
+    },
+    education: [
+      {
+        institution:
+          'National Technical University of Ukraine "Igor Sikorsky Kyiv Polytechnic Institute"',
+        period: 'Sep 2024 – Jun 2028',
+        details: 'B.Sc. Software Development (current, 2nd year)',
+      },
+    ],
+    courses: [
+      {
+        name: 'Full stack: react and java spring boot - the developer guide',
+        period: '2023-2024',
+      }
+    ],
+    extra: [
+      {
+        name: 'Backend developer: FICE selection committee project',
+        period: '2025-current',
+      },
+    ],
+  },
 };
