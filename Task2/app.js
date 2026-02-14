@@ -24,9 +24,9 @@ app.get('/team/:memberId', (req, res) => {
   const member = teamMembers[memberId];
 
   if (member) res.render('resume', { person: member });
-  else res.status(404).send('Учасника не знайдено');
+  else res.status(404).send('Member not found');
 });
 
 app.listen(PORT, () => {
-  console.log(`Сервер запущено: http://localhost:${PORT}`);
+  console.log(`Server is running: http://localhost:${PORT}`);
 });
