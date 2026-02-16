@@ -177,4 +177,50 @@ export default {
       },
     ],
   },
+  yuliia: {
+    id: 'yuliia',
+    name: 'Kostandi Yuliia',
+    role: 'Software Engineering Student',
+    photo: '/assets/yuliia.jpg',
+    location: 'Odesa, Ukraine',
+    phone: '+380 68 167 21 03',
+    email: 'yukostandi@gmail.com',
+    socials: [
+      { name: 'Telegram', link: 'https://t.me/chamomile_j' },
+      {
+        name: 'LinkedIn',
+        link: 'https://www.linkedin.com/in/yuliia-kostandi-7965003b0/',
+      },
+      { name: 'GitHub', link: 'https://github.com/yusik100' },
+    ],
+    profile:
+      '2nd-year Software Engineering student focused on Frontend development with a growing expertise in Backend technologies. I have hands-on experience building web applications using React and Next.js, and managing data with SQL databases. I actively develop pet projects to apply my knowledge. I am a proactive learner, eager to tackle new challenges and grow professionally.',
+    skills: {
+      'Web Basics': 'HTML5, CSS3, Tailwind CSS, Responsive Design',
+      'JavaScript & TypeScript': 'JS (ES6+), Async/Await, TypeScript basics',
+      'Frontend Frameworks': 'React, Next.js, Hooks, Context API, React Router',
+      Databases:
+        'PostgreSQL, pgAdmin, relational schema design, SQL queries and optimization',
+      'Tools & Workflow': 'Git, GitHub, VS Code',
+    },
+    education: [
+      {
+        institution:
+          'National Technical University of Ukraine "Igor Sikorsky Kyiv Polytechnic Institute"',
+        period: 'Sep 2024 – Jun 2028',
+        details: 'B.Sc. Software Development (current, 2nd year)',
+      },
+      {
+        institution: 'Odesa Lyceum No. 4',
+        period: 'Graduated May 2024',
+        details: 'Honors student, gold medalist. Odesa.',
+      },
+    ],
+    courses: [
+      {
+        name: 'React - The Complete Guide (incl. Next.js, Redux) - Udemy',
+        period: '2026',
+      },
+    ],
+  },
 };
