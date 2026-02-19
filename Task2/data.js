@@ -223,4 +223,39 @@ export default {
       },
     ],
   },
+  yurii: {
+    id: 'yurii', 
+    name: 'Choruk Yurii',
+    role: 'Software Engineering Student', 
+    photo: '/assets/yurii.jpg',
+    location: 'Lutsk, Ukraine', 
+    phone: '+380687944806',
+    email: 'yurachoruk123@gmail.com', 
+    socials: [
+      { name: 'Telegram', link: 'https://t.me/yurii_choruk' },
+      { name: 'GitHub', link: 'https://github.com/yur25' },
+    ], 
+    profile: 'Software Engineering student interested in developing in muliple fields of programming. I have experience with game development on Unity, web development with NodeJS, managing data with SQL databases. I am a proactive learner, collaborative, and eager to grow professionaly',
+    skills: {
+      'Game Development': 'Unity, C# basics',
+      'JavaScript & Node.js': 'JS (ES6+), asynchronous programming, data streaming',
+      'C/C++': 'Algorythms, memory management, Windows desktop apps',
+      Databases:
+        'PostgreSQL, database normalization, relational schema design, SQL queries and optimization',
+      'Tools & Workflow': 'Git, GitHub, VS Code',
+    },
+    education: [
+      {
+        institution:
+          'National Technical University of Ukraine "Igor Sikorsky Kyiv Polytechnic Institute"',
+        period: 'Sep 2024 – Jun 2028',
+        details: 'B.Sc. Software Development (current, 2nd year)',
+      },
+      {
+        institution: 'Lutsk Lyceum No. 9',
+        period: 'Graduated May 2024',
+        details: 'Honors student, gold medalist.',
+      },
+    ],
+  }
 };
