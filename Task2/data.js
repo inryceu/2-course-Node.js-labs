@@ -223,4 +223,42 @@ export default {
       },
     ],
   },
+  vladyslav: {
+    id: 'vladyslav',
+    name: 'Vladyslav Mykhailov',
+    role: 'Software Engineering Student',
+    photo: '/assets/vladyslav.jpg',
+    location: 'Kyiv, Ukraine',
+    phone: '+380 99 964 80 99',
+    email: 'vladm2329@gmail.com',
+    socials: [
+      { name: 'Telegram', link: 'https://t.me/taitami' },
+      {
+        name: 'LinkedIn',
+        link: 'https://www.linkedin.com/in/vladyslavmykhailov/',
+      },
+      { name: 'GitHub', link: 'https://github.com/taitami' },
+    ],
+    profile:
+      'Motivated Software Engineering student and aspiring Full-Stack Developer with hands-on experience in Nest.js and Fastify, React and Next.js, SQL and NoSQL, Prisma ORM. Solid background in algorithms and data structures. Proactive, collaborative, and eager to grow professionally.',
+    skills: {
+      'Node.js':
+        'Fastify, Nest.js, WebSocket, REST API, MongoDB/PostgreSQL, JWT, Prisma ORM',
+      React: 'Hooks, Context API, React Router, Tailwind, Next.js',
+      AI: 'OpenAI API, Anthropic API, RAG, Prompt Engineering',
+      Python: 'Basics of scripting, data analysis, OOP, Flask/Django (intro)',
+      Databases:
+        'SQL (PostgreSQL, SQLite), NoSQL (MongoDB), schema design, queries, indexing',
+      DevOps: 'Docker, CI/CD basics, GitHub Actions, Linux server setup',
+      Tools: 'Git, GitHub, UML, Trello',
+    },
+    education: [
+      {
+        institution:
+          'National Technical University of Ukraine "Igor Sikorsky Kyiv Polytechnic Institute"',
+        period: 'Sep 2024 – Jun 2028',
+        details: 'B.Sc. Software Development (current, 2nd year)',
+      },
+    ],
+  },
 };
