@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import teamMembers from './data.js';
+import teamMembers from './public/data.js';
 
 const app = express();
 const PORT = 3000;
