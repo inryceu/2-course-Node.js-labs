@@ -21,7 +21,7 @@ export class TvProgram {
   }
 }
 
-const Role = {USER: "USER", ADMIN: "ADMIN"}
+export const Role = {USER: "USER", ADMIN: "ADMIN"}
 
 class BaseUser {
   constructor(name, surname, email, password, role) {
@@ -33,14 +33,14 @@ class BaseUser {
   }
 }
 
-class User extends BaseUser {
+export class User extends BaseUser {
   constructor(name, surname, email, password) {
-    super(name, surname, email, password, Role.USER)
+    super(name, surname, email, password, Role.USER);
   }
 }
 
-class Admin {
+export class Admin extends BaseUser {
   constructor(name, surname, email, password) {
-    super(name, surname, email, password, Role.ADMIN)
+    super(name, surname, email, password, Role.ADMIN);
   }
 }
