@@ -1,5 +1,6 @@
 import { IRepository } from "../contracts/IRepository.js";
 import { TvProgram } from "../models/entities.js";
+import initialPrograms from "../mockdata/programs.json" with { type: "json" };
 
 export class ProgramRepo extends IRepository {
   constructor() {
@@ -10,10 +11,9 @@ export class ProgramRepo extends IRepository {
       return idCounter++;
     };
 
-    this.programs = [
-      new TvProgram(1, 101, 201, "18:00"),
-      new TvProgram(2, 102, 202, "20:00"),
-    ];
+    this.programs = initialPrograms.map(p => 
+      new TvProgram(p.id, p.channelId, p.showId, p.startTime)
+    );
   }
 
   async getAll() {
