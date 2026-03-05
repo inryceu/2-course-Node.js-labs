@@ -1,7 +1,7 @@
-export class CreateProgramDTO {
+export class ProgramDTO {
   constructor({ channelId, showId, startTime }) {
     if (!channelId || !showId || !startTime) {
-      throw new Error("Invalid CreateProgramDTO payload");
+      throw new Error("Invalid ProgramDTO payload");
     }
     this.channelId = channelId;
     this.showId = showId;
