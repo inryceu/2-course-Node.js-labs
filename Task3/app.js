@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import programRoutes from "./src/routes/ProgramRoutes.js";
+import showRoutes from "./src/routes/ShowRoutes.js";
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/", programRoutes);
+app.use("/", showRoutes);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
