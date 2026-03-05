@@ -14,8 +14,8 @@ export class AuthController {
       // cookie by default live while browser is open
       // httpOnly: true  => don't allow browser to read or update this cookie
       res.cookie("sessionId", sessionId, { httpOnly: true });
-      // res.redirect("/schedule");
-      res.json(newUser);
+      res.redirect("/schedule");
+      // res.json(newUser);
     } catch (error) {
       res.status(400).send("Registration Error: " + error.message);
     }
@@ -29,8 +29,8 @@ export class AuthController {
       console.log("login user: ", user);
       const sessionId = this.sessionStore.createSession(user);
       res.cookie("sessionId", sessionId, { httpOnly: true });
-      // res.redirect("/schedule");
-      res.json(user);
+      res.redirect("/schedule");
+      // res.json(user);
     } catch (error) {
       res.status(401).send("Invalid email or password");
     }

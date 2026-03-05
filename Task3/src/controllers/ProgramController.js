@@ -9,8 +9,8 @@ export class ProgramController {
     try {
       const sortBy = req.query.sort || "startTime";
       const schedule = await this.programService.getSortedSchedule(sortBy);
-      // res.render("schedule", { schedule });
-      return res.json(schedule);
+      res.render("schedule", { schedule });
+      // return res.json(schedule);
     } catch (error) {
       res.status(500).send(error.message);
     }
@@ -19,9 +19,9 @@ export class ProgramController {
   async createProgram(req, res) {
     try {
       const programDto = new ProgramDTO(req.body);
-      const newProgram = await this.programService.addProgram(programDto);
-      // res.redirect("/schedule");
-      return res.json(newProgram);
+      await this.programService.addProgram(programDto);
+      res.redirect("/schedule");
+      // return res.json(newProgram);
     } catch (error) {
       res.status(400).send("Bad Request: " + error.message);
     }
@@ -31,12 +31,12 @@ export class ProgramController {
     try {
       const programId = Number(req.params.id);
       const programDto = new ProgramDTO(req.body);
-      const updatedProgram = await this.programService.updateProgram(
+      await this.programService.updateProgram(
         programId,
         programDto,
       );
-      // res.redirect("/schedule");
-      return res.json(updatedProgram);
+      res.redirect("/schedule");
+      // return res.json(updatedProgram);
     } catch (error) {
       res.status(400).send("Bad Request: " + error.message);
     }
@@ -45,9 +45,9 @@ export class ProgramController {
   async deleteProgram(req, res) {
     try {
       const programId = Number(req.params.id);
-      const isDeleted = await this.programService.deleteProgram(programId);
-      // res.redirect("/schedule");
-      return res.json(isDeleted);
+      await this.programService.deleteProgram(programId);
+      res.redirect("/schedule");
+      // return res.json(isDeleted);
     } catch (error) {
       res.status(400).send("Bad Request: " + error.message);
     }
