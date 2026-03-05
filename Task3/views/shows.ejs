@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Shows</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="home-content">
+                <h1>TV Shows</h1>
+            </div>
+        </header>
+        
+        <main>
+            <% if (shows && shows.length > 0) { %>
+                <ul class="team-list">
+                    <% shows.forEach(function(show) { %>
+                        <li>
+                            <a href="#">
+                                <span><strong>ID:</strong> <%= show.id %></span>
+                                <span><%= show.title %></span>
+                            </a>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>No shows available at the moment.</p>
+            <% } %>
+        </main>
+
+        <footer>
+            <a href="/">Back to Home</a>
+        </footer>
+    </div>
+</body>
+</html>
