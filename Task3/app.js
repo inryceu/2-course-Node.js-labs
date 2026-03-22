@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import programRoutes from "./src/routes/ProgramRoutes.js";
+import showRoutes from "./src/routes/ShowRoutes.js";
 import authRouter from "./src/routes/AuthRoutes.js";
 import cookieParser from 'cookie-parser';
 
@@ -19,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use("/", programRoutes);
+app.use("/shows", showRoutes);
 app.use("/schedule", programRoutes);
 app.use("/auth", authRouter);
 
