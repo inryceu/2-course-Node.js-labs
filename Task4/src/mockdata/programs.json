@@ -1,0 +1,22 @@
+[
+  { "id": 1, "channelId": 101, "showId": 201, "startTime": "19:30" },
+  { "id": 2, "channelId": 101, "showId": 209, "startTime": "21:00" },
+  { "id": 3, "channelId": 102, "showId": 202, "startTime": "18:45" },
+  { "id": 4, "channelId": 102, "showId": 203, "startTime": "22:00" },
+  { "id": 5, "channelId": 103, "showId": 204, "startTime": "19:00" },
+  { "id": 6, "channelId": 103, "showId": 213, "startTime": "21:30" },
+  { "id": 7, "channelId": 104, "showId": 205, "startTime": "10:00" },
+  { "id": 8, "channelId": 104, "showId": 214, "startTime": "16:00" },
+  { "id": 9, "channelId": 105, "showId": 201, "startTime": "20:00" },
+  { "id": 10, "channelId": 105, "showId": 207, "startTime": "15:00" },
+  { "id": 11, "channelId": 106, "showId": 206, "startTime": "23:00" },
+  { "id": 12, "channelId": 106, "showId": 210, "startTime": "19:00" },
+  { "id": 13, "channelId": 107, "showId": 218, "startTime": "21:00" },
+  { "id": 14, "channelId": 108, "showId": 219, "startTime": "20:00" },
+  { "id": 15, "channelId": 109, "showId": 217, "startTime": "22:00" },
+  { "id": 16, "channelId": 110, "showId": 212, "startTime": "21:45" },
+  { "id": 17, "channelId": 111, "showId": 208, "startTime": "08:00" },
+  { "id": 18, "channelId": 112, "showId": 208, "startTime": "09:00" },
+  { "id": 19, "channelId": 101, "showId": 220, "startTime": "23:30" },
+  { "id": 20, "channelId": 103, "showId": 211, "startTime": "18:00" }
+]
