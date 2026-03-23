@@ -6,7 +6,7 @@ export class AuthController {
     this.sessionStore = sessionStore;
   }
 
-  async register(req, res) {
+  register = async (req, res) => {
     try {
       const userDto = new RegisterUserDTO(req.body);
       const newUser = await this.authService.register(userDto);
@@ -19,12 +19,12 @@ export class AuthController {
     } catch (error) {
       res.status(400).send("Registration Error: " + error.message);
     }
-  }
+  };
 
-  async login(req, res) {
+  login = async (req, res) => {
     try {
       const userDto = new LoginUserDTO(req.body);
-      console.log("user dto: ", userDto)
+      console.log("user dto: ", userDto);
       const user = await this.authService.login(userDto);
       console.log("login user: ", user);
       const sessionId = this.sessionStore.createSession(user);
@@ -34,13 +34,13 @@ export class AuthController {
     } catch (error) {
       res.status(401).send("Invalid email or password");
     }
-  }
+  };
 
-  async logout(req, res) {
+  logout = async (req, res) => {
     const sessionId = req.cookies.sessionId;
     if (sessionId) {
       this.sessionStore.destroySession(sessionId);
       res.clearCookie("sessionId");
     }
-  }
+  };
 }

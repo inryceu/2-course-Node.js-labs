@@ -1,55 +1,59 @@
 import { ProgramDTO } from "../dtos/program.dto.js";
 
 export class ProgramController {
-  constructor(programService) {
+  constructor(programService, showService, channelService) {
     this.programService = programService;
+    this.showService = showService;
+    this.channelService = channelService;
   }
 
-  async getSchedulePage(req, res) {
+  getSchedulePage = async (req, res) => {
     try {
       const sortBy = req.query.sort || "startTime";
       const schedule = await this.programService.getSortedSchedule(sortBy);
-      res.render("schedule", { schedule });
-      // return res.json(schedule);
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  }
 
-  async createProgram(req, res) {
+      const shows = await this.showService.getAllShows();
+      const channels = await this.channelService.getAllChannels();
+
+      res.render("schedule", {
+        schedule,
+        shows,
+        channels,
+        user: req.user || null,
+      });
+    } catch (error) {
+      res.status(500).send("Internal Server Error: " + error.message);
+    }
+  };
+
+  createProgram = async (req, res) => {
     try {
       const programDto = new ProgramDTO(req.body);
       await this.programService.addProgram(programDto);
       res.redirect("/schedule");
-      // return res.json(newProgram);
     } catch (error) {
       res.status(400).send("Bad Request: " + error.message);
     }
-  }
+  };
 
-  async updateProgram(req, res) {
+  updateProgram = async (req, res) => {
     try {
       const programId = Number(req.params.id);
       const programDto = new ProgramDTO(req.body);
-      await this.programService.updateProgram(
-        programId,
-        programDto,
-      );
+      await this.programService.updateProgram(programId, programDto);
       res.redirect("/schedule");
-      // return res.json(updatedProgram);
     } catch (error) {
       res.status(400).send("Bad Request: " + error.message);
     }
-  }
+  };
 
-  async deleteProgram(req, res) {
+  deleteProgram = async (req, res) => {
     try {
       const programId = Number(req.params.id);
       await this.programService.deleteProgram(programId);
       res.redirect("/schedule");
-      // return res.json(isDeleted);
     } catch (error) {
       res.status(400).send("Bad Request: " + error.message);
     }
-  }
+  };
 }
