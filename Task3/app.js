@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import programRoutes from "./src/routes/ProgramRoutes.js";
 import authRouter from "./src/routes/AuthRoutes.js";
-import cookieParser from 'cookie-parser';
+import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = 3000;
@@ -19,8 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/schedule", programRoutes);
+app.use("/schedule", programRouter);
 app.use("/auth", authRouter);
+app.use("/", showRouter);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
