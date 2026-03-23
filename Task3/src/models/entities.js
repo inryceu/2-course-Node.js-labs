@@ -20,3 +20,28 @@ export class TvProgram {
     this.startTime = startTime;
   }
 }
+
+export const Role = {USER: "USER", ADMIN: "ADMIN"}
+
+class BaseUser {
+  constructor(id, firstName, lastName, email, password, role) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.password = password;
+    this.role = role;
+  }
+}
+
+export class User extends BaseUser {
+  constructor(id, firstName, lastName, email, password) {
+    super(id, firstName, lastName, email, password, Role.USER);
+  }
+}
+
+export class Admin extends BaseUser {
+  constructor(id, firstName, lastName, email, password) {
+    super(id, firstName, lastName, email, password, Role.ADMIN);
+  }
+}
