@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Вхід в систему (Адмін)</h2>
+        <form action="/auth/login" method="POST">
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" value="root@example.com" required>
+            </div>
+            <div style="margin-top: 10px;">
+                <label>Password:</label>
+                <input type="password" name="password" value="root" required>
+            </div>
+            <button type="submit" style="margin-top: 15px;">Увійти</button>
+        </form>
+        <p><a href="/">Повернутися на головну</a></p>
+    </div>
+</body>
+
+</html>

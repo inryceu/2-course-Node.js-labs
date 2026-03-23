@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TV Programs Schedule</title>
     <link rel="stylesheet" href="/css/index.css">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -13,24 +15,32 @@
                 <h1>TV Programs Schedule</h1>
             </div>
         </header>
-        
+
         <main>
-            <% if (programs && programs.length > 0) { %>
+            <% if (programs && programs.length> 0) { %>
                 <ul class="team-list">
                     <% programs.forEach(function(program) { %>
                         <li>
                             <a href="#">
-                                <span><strong>ID:</strong> <%= program.id %></span>
-                                <span><strong>Channel ID:</strong> <%= program.channelId %></span>
-                                <span><strong>Show ID:</strong> <%= program.showId %></span>
-                                <span><strong>Start Time:</strong> <%= program.startTime %></span>
+                                <span><strong>ID:</strong>
+                                    <%= program.id %>
+                                </span>
+                                <span><strong>Channel ID:</strong>
+                                    <%= program.channelId %>
+                                </span>
+                                <span><strong>Show ID:</strong>
+                                    <%= program.showId %>
+                                </span>
+                                <span><strong>Start Time:</strong>
+                                    <%= program.startTime %>
+                                </span>
                             </a>
                         </li>
-                    <% }); %>
+                        <% }); %>
                 </ul>
-            <% } else { %>
-                <p>No programs scheduled at the moment.</p>
-            <% } %>
+                <% } else { %>
+                    <p>No programs scheduled at the moment.</p>
+                    <% } %>
         </main>
 
         <footer>
@@ -38,4 +48,5 @@
         </footer>
     </div>
 </body>
+
 </html>
