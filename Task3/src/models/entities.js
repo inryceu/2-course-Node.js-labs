@@ -21,7 +21,7 @@ export class TvProgram {
   }
 }
 
-export const Role = {USER: "USER", ADMIN: "ADMIN"}
+export const Role = { USER: "USER", ADMIN: "ADMIN" };
 
 class BaseUser {
   constructor(id, firstName, lastName, email, password, role) {
