@@ -24,9 +24,10 @@ export class TvProgram {
 export const Role = {USER: "USER", ADMIN: "ADMIN"}
 
 class BaseUser {
-  constructor(name, surname, email, password, role) {
-    this.name = name;
-    this.surname = surname;
+  constructor(id, firstName, lastName, email, password, role) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.email = email;
     this.password = password;
     this.role = role;
@@ -34,13 +35,13 @@ class BaseUser {
 }
 
 export class User extends BaseUser {
-  constructor(name, surname, email, password) {
-    super(name, surname, email, password, Role.USER);
+  constructor(id, firstName, lastName, email, password) {
+    super(id, firstName, lastName, email, password, Role.USER);
   }
 }
 
 export class Admin extends BaseUser {
-  constructor(name, surname, email, password) {
-    super(name, surname, email, password, Role.ADMIN);
+  constructor(id, firstName, lastName, email, password) {
+    super(id, firstName, lastName, email, password, Role.ADMIN);
   }
 }

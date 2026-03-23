@@ -12,4 +12,14 @@ export class ProgramService {
     const newProgram = await this.repository.create(dtoPayload);
     return newProgram;
   }
+
+  async updateProgram(programId, dtoPayload) {
+    const updatedProgram = await this.repository.update(programId, dtoPayload);
+    return updatedProgram;
+  }
+
+  async deleteProgram(programId) {
+    const isDeleted = await this.repository.delete(programId);
+    return isDeleted;
+  }
 }
