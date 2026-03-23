@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Channels</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="home-content">
+                <h1>TV Channels</h1>
+            </div>
+        </header>
+        
+        <main>
+            <% if (channels && channels.length > 0) { %>
+                <ul class="team-list">
+                    <% channels.forEach(function(channel) { %>
+                        <li>
+                            <a href="#">
+                                <span><strong>ID:</strong> <%= channel.id %></span>
+                                <span><%= channel.name %></span>
+                            </a>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>No channels available at the moment.</p>
+            <% } %>
+        </main>
+
+        <footer>
+            <a href="/">Back to Home</a>
+        </footer>
+    </div>
+</body>
+</html>
