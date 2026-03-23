@@ -6,9 +6,11 @@ export class AuthService {
   async register(registerUserDto) {
     const allUsers = await this.repository.getAll();
     const emailExists = allUsers.some((u) => u.email === registerUserDto.email);
+
     if (emailExists) {
       throw new Error("User with this email already exists");
     }
+
     const newUser = await this.repository.create(registerUserDto);
     return newUser;
   }
@@ -18,7 +20,7 @@ export class AuthService {
       loginUserDto.email,
       loginUserDto.password,
     );
-    console.log("found user: ", user)
+    console.log("Found user: ", user.email);
     return user;
   }
 }
