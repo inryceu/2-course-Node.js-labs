@@ -1,63 +1,60 @@
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
 import { IRepository } from "../contracts/IRepository.js";
-import { User, Admin } from "../models/entities.js";
+import { User, Admin, Role } from "../models/entities.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export class AuthRepo extends IRepository {
   constructor() {
     super();
-    let idCounter = 2;
-    this.generateId = () => {
-      return idCounter++;
-    };
-    this.users = [
-      new Admin(1, "admin", "admin", "root@example.com", "root")
-    ];
+    this.filePath = path.join(__dirname, "../mockdata/users.json");
+    this.users = [];
+    this.idCounter = 2;
+  }
+
+  async init() {
+    if (this.users.length === 0) {
+      try {
+        const data = await fs.readFile(this.filePath, "utf-8");
+        const parsed = JSON.parse(data);
+        this.users = parsed.map((u) =>
+          u.role === Role.ADMIN
+            ? new Admin(u.id, u.firstName, u.lastName, u.email, u.password)
+            : new User(u.id, u.firstName, u.lastName, u.email, u.password),
+        );
+        this.idCounter = Math.max(...this.users.map((u) => u.id)) + 1;
+      } catch (error) {
+        console.error("Помилка читання users.json:", error);
+      }
+    }
   }
 
   async getAll() {
+    await this.init();
     return this.users;
   }
 
   async create(userDto) {
-    const newId = this.generateId();
+    await this.init();
     const newUser = new User(
-      newId,
+      this.idCounter++,
       userDto.firstName,
       userDto.lastName,
       userDto.email,
-      userDto.password
+      userDto.password,
     );
     this.users.push(newUser);
     return newUser;
   }
 
-  async update(userId, userDto) {
-    const user = await this.findUserById(userId);
-    if (userDto.firstName) user.firstName = userDto.firstName;
-    if (userDto.lastName) user.lastName = userDto.lastName;
-    if (userDto.email) user.email = userDto.email;
-    if (userDto.password) user.password = userDto.password;
-    return user;
-  }
-
-  async delete(userId) {
-    await this.findUserById(userId); 
-    this.users = this.users.filter(u => u.id !== userId);
-  }
-
-  async findUserById(userId) {
-    const user = this.users.find(u => u.id === userId);
-    if (!user) {
-      throw new Error(`User with id ${userId} not found`);
-    }
-    return user;
-  }
-
   async findUserByEmailAndPassword(email, password) {
-    const user = this.users.find(u => u.email === email && u.password === password);
-    console.log("found user: ", user)
-     if (!user) {
-      throw new Error("Invalid password or email");
-    }
+    await this.init();
+    const user = this.users.find(
+      (u) => u.email === email && u.password === password,
+    );
+    if (!user) throw new Error("Invalid password or email");
     return user;
   }
 }
