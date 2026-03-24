@@ -6,8 +6,7 @@ export class ProgramRepo extends IRepository {
   constructor() {
     super();
 
-    let maxId = this.programs.reduce((max, p) => (p.id > max ? p.id : max), 0);
-    let idCounter = maxId + 1;
+    let idCounter = 3;
     this.generateId = () => {
       return idCounter++;
     };
