@@ -1,19 +1,41 @@
-import express from "express";
-import { ProgramController } from "../controllers/ProgramController.js";
-import { ProgramService } from "../services/ProgramService.js";
+import { Router } from "express";
 import { ProgramRepo } from "../repositories/ProgramRepo.js";
-import { requireAdmin } from "../middlewares/requireAdmin.js";
+import { ShowRepo } from "../repositories/ShowRepo.js";
+import { ChannelRepo } from "../repositories/ChannelRepo.js";
+import { ProgramService } from "../services/ProgramService.js";
+import { ShowService } from "../services/ShowService.js";
+import { ChannelService } from "../services/ChannelService.js";
+import { ProgramController } from "../controllers/ProgramController.js";
+import { requireAdmin, extractUser } from "../middlewares/auth.middleware.js";
 
-const router = express.Router();
+const programRouter = Router();
 
 const programRepo = new ProgramRepo();
+const showRepo = new ShowRepo();
+const channelRepo = new ChannelRepo();
+
 const programService = new ProgramService(programRepo);
-const programController = new ProgramController(programService);
+const showService = new ShowService(showRepo);
+const channelService = new ChannelService(channelRepo);
 
-router.get("/", (req, res) => programController.getSchedulePage(req, res));
+const programController = new ProgramController(
+  programService,
+  showService,
+  channelService,
+);
 
-router.post("/create", requireAdmin, (req, res) => programController.createProgram(req, res));
-router.put("/update/:id", requireAdmin, (req, res) => programController.updateProgram(req, res));
-router.delete("/delete/:id", requireAdmin, (req, res) => programController.deleteProgram(req, res));
+programRouter.get("/", extractUser, programController.getSchedulePage);
 
-export default router;
+programRouter.post("/create", requireAdmin, programController.createProgram);
+programRouter.post(
+  "/:id/update",
+  requireAdmin,
+  programController.updateProgram,
+);
+programRouter.post(
+  "/:id/delete",
+  requireAdmin,
+  programController.deleteProgram,
+);
+
+export default programRouter;

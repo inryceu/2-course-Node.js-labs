@@ -1,15 +1,17 @@
-import express from "express";
+import { Router } from "express";
 import { ShowController } from "../controllers/ShowController.js";
 import { ShowService } from "../services/ShowService.js";
 import { ShowRepo } from "../repositories/ShowRepo.js";
+import { requireAdmin, extractUser } from "../middlewares/auth.middleware.js";
 
-const router = express.Router();
+const showRouter = Router();
 
 const showRepo = new ShowRepo();
 const showService = new ShowService(showRepo);
 const showController = new ShowController(showService);
 
-router.get("/shows", showController.getShowsPage.bind(showController));
-router.post("/shows", showController.createShow.bind(showController));
+showRouter.get("/shows", extractUser, showController.getShowsPage);
 
-export default router;
+showRouter.post("/shows", requireAdmin, showController.createShow);
+
+export default showRouter;

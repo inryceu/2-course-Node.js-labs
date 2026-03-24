@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Programs Schedule</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="home-content">
+                <h1>TV Programs Schedule</h1>
+                <nav>
+                    <a href="/schedule">Schedule</a> |
+                    <a href="/shows">Shows</a> |
+                    <a href="/channels">Channels</a> |
+                    <% if (user) { %>
+                        <strong>Привіт, <%= user.firstName %>!</strong> (<a href="/auth/logout">Вийти</a>)
+                        <% } else { %>
+                            <a href="/auth/login">Увійти як Адмін</a>
+                            <% } %>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div style="margin-bottom: 20px;">
+                <strong>Сортувати за:</strong>
+                <a href="/schedule?sort=startTime">Часом</a> |
+                <a href="/schedule?sort=channelId">Каналом</a>
+            </div>
+
+            <% if (schedule && schedule.length> 0) { %>
+                <ul class="team-list">
+                    <% schedule.forEach(function(program) { %>
+                        <% let channelName='Невідомо' ; let showTitle='Невідомо' ; if (channels) { let
+                            c=channels.find(x=> String(x.id) === String(program.channelId));
+                            if (c) channelName = c.name;
+                            }
+                            if (shows) {
+                            let s = shows.find(x => String(x.id) === String(program.showId));
+                            if (s) showTitle = s.title;
+                            }
+                            %>
+                            <li style="display: flex; justify-content: space-between; align-items: center;">
+                                <a href="#">
+                                    <span><strong>ID:</strong>
+                                        <%= program.id %>
+                                    </span>
+                                    <span><strong>Канал:</strong>
+                                        <%= channelName %>
+                                    </span>
+                                    <span><strong>Передача:</strong>
+                                        <%= showTitle %>
+                                    </span>
+                                    <span><strong>Початок:</strong>
+                                        <%= program.startTime %>
+                                    </span>
+                                </a>
+                                <% if (user && user.role==='ADMIN' ) { %>
+                                    <form action="/schedule/<%= program.id %>/delete" method="POST" style="margin:0;">
+                                        <button type="submit"
+                                            style="background: red; color: white; padding: 5px 10px;">Видалити</button>
+                                    </form>
+                                    <% } %>
+                            </li>
+                            <% }); %>
+                </ul>
+                <% } else { %>
+                    <p>No programs scheduled at the moment.</p>
+                    <% } %>
+
+                        <% if (user && user.role==='ADMIN' ) { %>
+                            <hr>
+                            <h3>Додати нову програму в розклад</h3>
+                            <form action="/schedule/create" method="POST">
+                                <label>Канал ID:</label>
+                                <input type="number" name="channelId" required>
+                                <label>Передача ID:</label>
+                                <input type="number" name="showId" required>
+                                <label>Час початку:</label>
+                                <input type="text" name="startTime" placeholder="напр., 14:00" required>
+                                <button type="submit">Додати</button>
+                            </form>
+                            <% } %>
+        </main>
+
+        <footer>
+            <a href="/">Back to Home</a>
+        </footer>
+    </div>
+</body>
+
+</html>

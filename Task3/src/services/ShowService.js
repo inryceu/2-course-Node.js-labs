@@ -4,8 +4,7 @@ export class ShowService {
   }
 
   async getAllShows() {
-    const shows = await this.repository.getAll();
-    return shows;
+    return await this.repository.getAll();
   }
 
   async addShow(showData) {

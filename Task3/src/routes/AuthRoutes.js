@@ -1,16 +1,20 @@
-import express from 'express';
-import { AuthController } from '../controllers/AuthController.js';
-import { AuthService } from '../services/AuthService.js';
+import { Router } from "express";
 import { AuthRepo } from "../repositories/AuthRepo.js";
+import { AuthService } from "../services/AuthService.js";
+import { AuthController } from "../controllers/AuthController.js";
 import sessionStore from "../services/SessionStore.js";
 
-const router = express.Router();
+const authRouter = Router();
 
 const authRepo = new AuthRepo();
 const authService = new AuthService(authRepo);
 const authController = new AuthController(authService, sessionStore);
 
-router.post('/register', (req, res) => authController.register(req, res));
-router.post('/login', (req, res) => authController.login(req, res));
+authRouter.get("/login", (req, res) => res.render("login"));
+authRouter.get("/register", (req, res) => res.render("register"));
 
-export default router;
+authRouter.post("/register", authController.register);
+authRouter.post("/login", authController.login);
+authRouter.get("/logout", authController.logout);
+
+export default authRouter;

@@ -1,34 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TV Shows</title>
     <link rel="stylesheet" href="/css/index.css">
 </head>
+
 <body>
     <div class="container">
         <header>
             <div class="home-content">
                 <h1>TV Shows</h1>
+                <nav>
+                    <a href="/schedule">Schedule</a> | <a href="/shows">Shows</a> | <a href="/channels">Channels</a>
+                </nav>
             </div>
         </header>
-        
+
         <main>
-            <% if (shows && shows.length > 0) { %>
+            <% if (shows && shows.length> 0) { %>
                 <ul class="team-list">
                     <% shows.forEach(function(show) { %>
                         <li>
                             <a href="#">
-                                <span><strong>ID:</strong> <%= show.id %></span>
-                                <span><%= show.title %></span>
+                                <span><strong>ID:</strong>
+                                    <%= show.id %>
+                                </span>
+                                <span>
+                                    <%= show.title %>
+                                </span>
                             </a>
                         </li>
-                    <% }); %>
+                        <% }); %>
                 </ul>
-            <% } else { %>
-                <p>No shows available at the moment.</p>
-            <% } %>
+                <% } else { %>
+                    <p>No shows available at the moment.</p>
+                    <% } %>
+
+                        <% if (user && user.role==='ADMIN' ) { %>
+                            <hr>
+                            <h3>Додати нову передачу</h3>
+                            <form action="/shows" method="POST">
+                                <input type="text" name="title" placeholder="Назва передачі" required>
+                                <button type="submit">Створити</button>
+                            </form>
+                            <% } %>
         </main>
 
         <footer>
@@ -36,4 +54,5 @@
         </footer>
     </div>
 </body>
+
 </html>

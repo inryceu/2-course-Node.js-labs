@@ -8,7 +8,7 @@ class SessionStore {
   createSession(user) {
     const sessionId = crypto.randomUUID();
     this.sessions.set(sessionId, user);
-    console.log("Session: ", this.sessions)
+    console.log("Session: ", this.sessions);
     return sessionId;
   }
 
