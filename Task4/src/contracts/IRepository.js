@@ -12,6 +12,6 @@ export class IRepository {
     throw new Error("Method 'delete()' must be implemented.");
   }
   async update(id, data) {
-    throw new Error("Method 'update()' must be implemented.")
+    throw new Error("Method 'update()' must be implemented.");
   }
 }

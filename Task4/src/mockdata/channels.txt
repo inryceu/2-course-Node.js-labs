@@ -1,0 +1,15 @@
+101|1+1
+102|ICTV
+103|STB
+104|Novyi Kanal
+105|Suspilne
+106|TET
+107|Mega
+108|NTN
+109|K1
+110|2+2
+111|Pixel
+112|PlusPlus
+113|XSPORT
+114|M1
+115|Enter-Film
