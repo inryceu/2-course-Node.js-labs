@@ -3,13 +3,25 @@ export class ProgramService {
     this.repository = programRepository;
   }
 
-  async getSortedSchedule(sortBy = "time") {
+  async getSortedSchedule(sortBy = "startTime") {
     const programs = await this.repository.getAll();
-    return programs.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1));
+
+    return [...programs].sort((a, b) => {
+      if (a[sortBy] < b[sortBy]) return -1;
+      if (a[sortBy] > b[sortBy]) return 1;
+      return 0;
+    });
   }
 
   async addProgram(dtoPayload) {
-    const newProgram = await this.repository.create(dtoPayload);
-    return newProgram;
+    return await this.repository.create(dtoPayload);
+  }
+
+  async updateProgram(programId, dtoPayload) {
+    return await this.repository.update(programId, dtoPayload);
+  }
+
+  async deleteProgram(programId) {
+    return await this.repository.delete(programId);
   }
 }
