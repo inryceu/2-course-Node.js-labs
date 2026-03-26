@@ -1,53 +1,86 @@
-import fs from "fs/promises";
-import path from "path";
-import { fileURLToPath } from "url";
 import { IRepository } from "../contracts/IRepository.js";
 import { TvProgram } from "../models/entities.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { pool } from "../config/db.js";
 
 export class ProgramRepo extends IRepository {
-  constructor() {
-    super();
-    this.filePath = path.join(__dirname, "../mockdata/programs.json");
-    this.programs = [];
-    this.idCounter = 1;
-  }
-
-  loadData() {
-    return fs
-      .readFile(this.filePath, "utf-8")
-      .then((data) => {
-        const parsed = JSON.parse(data);
-        this.programs = parsed.map(
-          (p) => new TvProgram(p.id, p.channelId, p.showId, p.startTime),
-        );
-        this.idCounter =
-          this.programs.length > 0
-            ? Math.max(...this.programs.map((p) => p.id)) + 1
-            : 1;
-        return this.programs;
-      })
-      .catch((err) => {
-        console.error("Помилка читання programs.json", err);
-        return [];
-      });
+  _mapRowToProgram(row) {
+    if (!row) return null;
+    return new TvProgram(row.id, row.channel_id, row.show_id, row.start_time);
   }
 
   async getAll() {
-    if (this.programs.length === 0) await this.loadData();
-    return this.programs;
+    try {
+      const result = await pool.query(
+        "SELECT * FROM programs ORDER BY start_time ASC",
+      );
+      return result.rows.map(this._mapRowToProgram);
+    } catch (error) {
+      console.error("Помилка при отриманні розкладу з БД:", error);
+      return [];
+    }
+  }
+
+  async getById(id) {
+    const result = await pool.query("SELECT * FROM programs WHERE id = $1", [
+      id,
+    ]);
+    if (result.rows.length === 0) {
+      throw new Error(`Program with id ${id} not found`);
+    }
+    return this._mapRowToProgram(result.rows[0]);
   }
 
   async create(data) {
-    if (this.programs.length === 0) await this.loadData();
-    const newProgram = new TvProgram(
-      this.idCounter++,
-      data.channelId,
-      data.showId,
-      data.startTime,
+    const queryText = `
+      INSERT INTO programs (channel_id, show_id, start_time) 
+      VALUES ($1, $2, $3) RETURNING *
+    `;
+    const values = [data.channelId, data.showId, data.startTime];
+
+    try {
+      const result = await pool.query(queryText, values);
+      return this._mapRowToProgram(result.rows[0]);
+    } catch (error) {
+      console.error(
+        "Помилка створення програми (можливо, невірний channelId або showId):",
+        error,
+      );
+      throw error;
+    }
+  }
+
+  async update(id, dtoPayload) {
+    const queryText = `
+      UPDATE programs
+      SET channel_id = COALESCE($1, channel_id),
+          show_id = COALESCE($2, show_id),
+          start_time = COALESCE($3, start_time)
+      WHERE id = $4 RETURNING *
+    `;
+    const values = [
+      dtoPayload.channelId,
+      dtoPayload.showId,
+      dtoPayload.startTime,
+      id,
+    ];
+
+    const result = await pool.query(queryText, values);
+
+    if (result.rowCount === 0) {
+      throw new Error("Програму для оновлення не знайдено");
+    }
+    return this._mapRowToProgram(result.rows[0]);
+  }
+
+  async delete(id) {
+    const result = await pool.query(
+      "DELETE FROM programs WHERE id = $1 RETURNING id",
+      [id],
     );
-    this.programs.push(newProgram);
-    return newProgram;
+
+    if (result.rowCount === 0) {
+      throw new Error("Програму для видалення не знайдено");
+    }
+    return true;
   }
 }

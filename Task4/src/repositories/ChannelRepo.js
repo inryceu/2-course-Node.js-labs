@@ -1,35 +1,62 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 import { IRepository } from "../contracts/IRepository.js";
 import { Channel } from "../models/entities.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { pool } from "../config/db.js";
 
 export class ChannelRepo extends IRepository {
-  constructor() {
-    super();
-    this.filePath = path.join(__dirname, "../mockdata/channels.json");
+  _mapRowToChannel(row) {
+    if (!row) return null;
+    return new Channel(row.id, row.name);
   }
 
   async getAll() {
-    return new Promise((resolve, reject) => {
-      fs.readFile(this.filePath, "utf-8", (err, data) => {
-        if (err) {
-          console.error("Помилка читання channels.json:", err.message);
-          return resolve([]);
-        }
+    try {
+      const result = await pool.query("SELECT * FROM channels ORDER BY id ASC");
+      return result.rows.map(this._mapRowToChannel);
+    } catch (error) {
+      console.error("Помилка при отриманні каналів з БД:", error);
+      return [];
+    }
+  }
 
-        try {
-          const parsed = JSON.parse(data);
-          const channels = parsed.map((c) => new Channel(c.id, c.name));
-          resolve(channels);
-        } catch (parseErr) {
-          console.error("Помилка парсингу channels.json:", parseErr.message);
-          resolve([]);
-        }
-      });
-    });
+  async getById(id) {
+    const result = await pool.query("SELECT * FROM channels WHERE id = $1", [
+      id,
+    ]);
+    if (result.rows.length === 0) {
+      throw new Error(`Channel with id ${id} not found`);
+    }
+    return this._mapRowToChannel(result.rows[0]);
+  }
+
+  async create(channelDto) {
+    const queryText = "INSERT INTO channels (name) VALUES ($1) RETURNING *";
+    const result = await pool.query(queryText, [channelDto.name]);
+    return this._mapRowToChannel(result.rows[0]);
+  }
+
+  async update(id, channelDto) {
+    const queryText = `
+      UPDATE channels
+      SET name = COALESCE($1, name)
+      WHERE id = $2 RETURNING *
+    `;
+    const result = await pool.query(queryText, [channelDto.name, id]);
+
+    if (result.rowCount === 0) {
+      throw new Error("Канал для оновлення не знайдено");
+    }
+    return this._mapRowToChannel(result.rows[0]);
+  }
+
+  async delete(id) {
+    const result = await pool.query(
+      "DELETE FROM channels WHERE id = $1 RETURNING id",
+      [id],
+    );
+
+    if (result.rowCount === 0) {
+      throw new Error("Канал для видалення не знайдено");
+    }
+    return true;
   }
 }
