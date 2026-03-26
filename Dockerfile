@@ -2,11 +2,11 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY Task4/package*.json ./
+COPY Task5/package*.json ./
 
 RUN npm install
 
-COPY Task4/ ./
+COPY Task5/ ./
 
 EXPOSE 3000
 CMD ["node", "app.js"]
