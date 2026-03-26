@@ -6,6 +6,7 @@ import channelRouter from "./src/routes/ChannelRoutes.js";
 import showRouter from "./src/routes/ShowRoutes.js";
 import authRouter from "./src/routes/AuthRoutes.js";
 import cookieParser from "cookie-parser";
+import "dotenv/config";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
