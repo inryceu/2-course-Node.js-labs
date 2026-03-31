@@ -5,8 +5,21 @@ export class ShowController {
 
   getShowsPage = async (req, res) => {
     try {
-      const shows = await this.showService.getAllShows();
-      res.render("shows", { shows, user: req.user || null });
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 5;
+      const search = req.query.search || "";
+
+      const { shows, totalPages, currentPage } =
+        await this.showService.getAllShows(page, limit, search);
+
+      res.render("shows", {
+        shows,
+        user: req.user || null,
+        currentPage,
+        totalPages,
+        search,
+        limit,
+      });
     } catch (error) {
       console.error("Error reading shows:", error);
       res.status(500).send("Internal Server Error: " + error.message);
