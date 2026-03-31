@@ -12,7 +12,7 @@ export class ProgramController {
       const sortBy = req.query.sort || "startTime";
       const schedule = await this.programService.getSortedSchedule(sortBy);
 
-      const shows = await this.showService.getAllShows();
+      const shows = await this.showService.getAllShowsSimple();
       const channels = await this.channelService.getAllChannels();
 
       res.render("schedule", {

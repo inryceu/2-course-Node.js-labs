@@ -1,15 +1,16 @@
+import { Op } from "sequelize"; // Обов'язковий імпорт для пошуку!
 import { IRepository } from "../contracts/IRepository.js";
 import { Show } from "../models/entities.js";
 import { sequelize, ShowModel } from "../config/db.js";
 
 export class ShowRepo extends IRepository {
-  _mapRowToShow(row) {
+  _mapRowToShow = (row) => {
     if (!row) return null;
     const data = row.get({ plain: true });
     return new Show(data.id, data.title);
-  }
+  };
 
-  async getAll() {
+  getAll = async () => {
     try {
       const result = await ShowModel.findAll({
         order: [["id", "ASC"]],
@@ -19,17 +20,40 @@ export class ShowRepo extends IRepository {
       console.error("Помилка при отриманні передач з БД:", error);
       return [];
     }
-  }
+  };
 
-  async getById(id) {
+  getPaginatedAndFiltered = async (limit, offset, search) => {
+    try {
+      const whereCondition = search
+        ? { title: { [Op.iLike]: `%${search}%` } }
+        : {};
+
+      const result = await ShowModel.findAndCountAll({
+        where: whereCondition,
+        limit: limit,
+        offset: offset,
+        order: [["id", "ASC"]],
+      });
+
+      return {
+        count: result.count,
+        rows: result.rows.map((row) => this._mapRowToShow(row)),
+      };
+    } catch (error) {
+      console.error("Помилка при отриманні пагінованих передач з БД:", error);
+      return { count: 0, rows: [] };
+    }
+  };
+
+  getById = async (id) => {
     const result = await ShowModel.findByPk(id);
     if (!result) {
       throw new Error(`Show with id ${id} not found`);
     }
     return this._mapRowToShow(result);
-  }
+  };
 
-  async create(data) {
+  create = async (data) => {
     const transaction = await sequelize.transaction();
     try {
       const newShow = await ShowModel.create(
@@ -45,9 +69,9 @@ export class ShowRepo extends IRepository {
       await transaction.rollback();
       throw error;
     }
-  }
+  };
 
-  async update(id, data) {
+  update = async (id, data) => {
     const transaction = await sequelize.transaction();
     try {
       const show = await ShowModel.findByPk(id, { transaction });
@@ -69,9 +93,9 @@ export class ShowRepo extends IRepository {
       await transaction.rollback();
       throw error;
     }
-  }
+  };
 
-  async delete(id) {
+  delete = async (id) => {
     const transaction = await sequelize.transaction();
     try {
       const deletedCount = await ShowModel.destroy({
@@ -89,5 +113,5 @@ export class ShowRepo extends IRepository {
       await transaction.rollback();
       throw error;
     }
-  }
+  };
 }

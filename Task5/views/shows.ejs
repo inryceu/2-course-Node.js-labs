@@ -20,6 +20,13 @@
         </header>
 
         <main>
+            <form action="/shows" method="GET" style="margin-bottom: 20px;">
+                <input type="text" name="search" placeholder="Пошук за назвою..." value="<%= search %>">
+                <input type="hidden" name="limit" value="<%= limit %>">
+                <button type="submit">Знайти</button>
+                <a href="/shows">Скинути</a>
+            </form>
+
             <% if (shows && shows.length> 0) { %>
                 <ul class="team-list">
                     <% shows.forEach(function(show) { %>
@@ -35,18 +42,24 @@
                         </li>
                         <% }); %>
                 </ul>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <% if (currentPage> 1) { %>
+                        <a
+                            href="/shows?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= search %>">Попередня</a>
+                        <% } %>
+
+                            <span style="margin: 0 10px;">Сторінка <%= currentPage %> з <%= totalPages %></span>
+
+                            <% if (currentPage < totalPages) { %>
+                                <a
+                                    href="/shows?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= search %>">Наступна</a>
+                                <% } %>
+                </div>
                 <% } else { %>
-                    <p>No shows available at the moment.</p>
+                    <p>Нічого не знайдено.</p>
                     <% } %>
 
-                        <% if (user && user.role==='ADMIN' ) { %>
-                            <hr>
-                            <h3>Додати нову передачу</h3>
-                            <form action="/shows" method="POST">
-                                <input type="text" name="title" placeholder="Назва передачі" required>
-                                <button type="submit">Створити</button>
-                            </form>
-                            <% } %>
         </main>
 
         <footer>
