@@ -16,6 +16,10 @@ export class ChannelService {
     return newChannel;
   }
 
+  async updateChannel(id, dtoPayload) {
+    return await this.repository.update(id, dtoPayload);
+  }
+
   async deleteChannel(id) {
     return await this.repository.delete(id);
   }

@@ -13,5 +13,7 @@ const showController = new ShowController(showService);
 showRouter.get("/shows", extractUser, showController.getShowsPage);
 
 showRouter.post("/shows", requireAdmin, showController.createShow);
+showRouter.post("/shows/:id/update", requireAdmin, showController.updateShow);
+showRouter.post("/shows/:id/delete", requireAdmin, showController.deleteShow);
 
 export default showRouter;
