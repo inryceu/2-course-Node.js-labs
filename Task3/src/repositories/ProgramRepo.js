@@ -14,9 +14,11 @@ export class ProgramRepo extends IRepository {
     this.idCounter = 1;
   }
 
+  // Асинхронний з Promise
   loadData() {
     return fs
       .readFile(this.filePath, "utf-8")
+      // readFile -> асинхронний метод для читання файлу, який повертає проміс. Він не блокує event loop, дозволяючи серверу обробляти інші запити під час читання файлу.
       .then((data) => {
         const parsed = JSON.parse(data);
         this.programs = parsed.map(

@@ -14,6 +14,8 @@ export class ShowRepo extends IRepository {
 
   async getAll() {
     try {
+      // Синхронний ввід-вивід
+      // readFileSync -> блокує event loop до завершення операції читання, що може призвести до затримок у відповіді сервера, особливо при великому файлі.
       const rawData = fs.readFileSync(this.filePath, "utf-8");
       const lines = rawData.split("\n").filter((line) => line.trim() !== "");
       return lines.map((line) => {

@@ -27,34 +27,64 @@ export class ShowRepo extends IRepository {
   }
 
   async create(data) {
-    const queryText = "INSERT INTO shows (title) VALUES ($1) RETURNING *";
-    const result = await pool.query(queryText, [data.title]);
-    return this._mapRowToShow(result.rows[0]);
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await client.query(
+        "INSERT INTO shows (title) VALUES ($1) RETURNING *",
+        [data.title],
+      );
+      await client.query("COMMIT");
+      return this._mapRowToShow(result.rows[0]);
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
   async update(id, data) {
-    const queryText = `
-      UPDATE shows
-      SET title = COALESCE($1, title)
-      WHERE id = $2 RETURNING *
-    `;
-    const result = await pool.query(queryText, [data.title, id]);
-
-    if (result.rowCount === 0) {
-      throw new Error("Передачу для оновлення не знайдено");
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const queryText = `
+        UPDATE shows
+        SET title = COALESCE($1, title)
+        WHERE id = $2 RETURNING *
+      `;
+      const result = await client.query(queryText, [data.title, id]);
+      if (result.rowCount === 0) {
+        throw new Error("Передачу для оновлення не знайдено");
+      }
+      await client.query("COMMIT");
+      return this._mapRowToShow(result.rows[0]);
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
     }
-    return this._mapRowToShow(result.rows[0]);
   }
 
   async delete(id) {
-    const result = await pool.query(
-      "DELETE FROM shows WHERE id = $1 RETURNING id",
-      [id],
-    );
-
-    if (result.rowCount === 0) {
-      throw new Error("Передачу для видалення не знайдено");
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await client.query(
+        "DELETE FROM shows WHERE id = $1 RETURNING id",
+        [id],
+      );
+      if (result.rowCount === 0) {
+        throw new Error("Передачу для видалення не знайдено");
+      }
+      await client.query("COMMIT");
+      return true;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
     }
-    return true;
   }
 }
