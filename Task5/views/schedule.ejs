@@ -61,6 +61,17 @@
                                     </span>
                                 </a>
                                 <% if (user && user.role==='ADMIN' ) { %>
+                                    <form action="/schedule/<%= program.id %>/update" method="POST"
+                                        style="margin:0 10px; display:flex; gap:6px; align-items:center;">
+                                        <input type="number" name="channelId" value="<%= program.channelId %>" required
+                                            style="width:70px;">
+                                        <input type="number" name="showId" value="<%= program.showId %>" required
+                                            style="width:70px;">
+                                        <input type="text" name="startTime" value="<%= program.startTime %>" required
+                                            style="width:80px;">
+                                        <button type="submit"
+                                            style="background:#1e90ff; color:white; padding:5px 10px;">Оновити</button>
+                                    </form>
                                     <form action="/schedule/<%= program.id %>/delete" method="POST" style="margin:0;">
                                         <button type="submit"
                                             style="background: red; color: white; padding: 5px 10px;">Видалити</button>

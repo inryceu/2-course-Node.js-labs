@@ -30,7 +30,7 @@
             <% if (shows && shows.length> 0) { %>
                 <ul class="team-list">
                     <% shows.forEach(function(show) { %>
-                        <li>
+                        <li style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
                             <a href="#">
                                 <span><strong>ID:</strong>
                                     <%= show.id %>
@@ -39,6 +39,20 @@
                                     <%= show.title %>
                                 </span>
                             </a>
+                            <% if (user && user.role==='ADMIN' ) { %>
+                                <div style="display:flex; gap:8px;">
+                                    <form action="/shows/<%= show.id %>/update" method="POST"
+                                        style="display:flex; gap:6px; align-items:center; margin:0;">
+                                        <input type="text" name="title" value="<%= show.title %>" required>
+                                        <button type="submit"
+                                            style="background:#1e90ff; color:white; padding:5px 10px;">Оновити</button>
+                                    </form>
+                                    <form action="/shows/<%= show.id %>/delete" method="POST" style="margin:0;">
+                                        <button type="submit"
+                                            style="background:red; color:white; padding:5px 10px;">Видалити</button>
+                                    </form>
+                                </div>
+                                <% } %>
                         </li>
                         <% }); %>
                 </ul>

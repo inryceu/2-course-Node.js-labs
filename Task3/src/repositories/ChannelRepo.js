@@ -14,10 +14,14 @@ export class ChannelRepo extends IRepository {
   }
 
   async getAll() {
+    // Асинхронний з callback
+    // return new Promise -> дозволяє обернути асинхронну операцію з callback у проміс, що полегшує роботу з асинхронним кодом і дозволяє використовувати async/await для більш чистого синтаксису.
     return new Promise((resolve, reject) => {
       fs.readFile(this.filePath, "utf-8", (err, data) => {
+        // callback для обробки результату читання файлу. Якщо виникає помилка, вона передається в err, а якщо операція успішна, дані передаються в data.
         if (err) {
           console.error("Помилка читання channels.json:", err.message);
+          // Якщо файл не існує або виникла інша помилка, повертаємо порожній масив замість відмови.
           return resolve([]);
         }
 

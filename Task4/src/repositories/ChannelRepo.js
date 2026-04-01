@@ -29,34 +29,64 @@ export class ChannelRepo extends IRepository {
   }
 
   async create(channelDto) {
-    const queryText = "INSERT INTO channels (name) VALUES ($1) RETURNING *";
-    const result = await pool.query(queryText, [channelDto.name]);
-    return this._mapRowToChannel(result.rows[0]);
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await client.query(
+        "INSERT INTO channels (name) VALUES ($1) RETURNING *",
+        [channelDto.name],
+      );
+      await client.query("COMMIT");
+      return this._mapRowToChannel(result.rows[0]);
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
   async update(id, channelDto) {
-    const queryText = `
-      UPDATE channels
-      SET name = COALESCE($1, name)
-      WHERE id = $2 RETURNING *
-    `;
-    const result = await pool.query(queryText, [channelDto.name, id]);
-
-    if (result.rowCount === 0) {
-      throw new Error("Канал для оновлення не знайдено");
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const queryText = `
+        UPDATE channels
+        SET name = COALESCE($1, name)
+        WHERE id = $2 RETURNING *
+      `;
+      const result = await client.query(queryText, [channelDto.name, id]);
+      if (result.rowCount === 0) {
+        throw new Error("Канал для оновлення не знайдено");
+      }
+      await client.query("COMMIT");
+      return this._mapRowToChannel(result.rows[0]);
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
     }
-    return this._mapRowToChannel(result.rows[0]);
   }
 
   async delete(id) {
-    const result = await pool.query(
-      "DELETE FROM channels WHERE id = $1 RETURNING id",
-      [id],
-    );
-
-    if (result.rowCount === 0) {
-      throw new Error("Канал для видалення не знайдено");
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await client.query(
+        "DELETE FROM channels WHERE id = $1 RETURNING id",
+        [id],
+      );
+      if (result.rowCount === 0) {
+        throw new Error("Канал для видалення не знайдено");
+      }
+      await client.query("COMMIT");
+      return true;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
     }
-    return true;
   }
 }

@@ -26,4 +26,12 @@ export class ShowService {
   async addShow(showData) {
     return await this.repository.create(showData);
   }
+
+  async updateShow(id, showData) {
+    return await this.repository.update(id, showData);
+  }
+
+  async deleteShow(id) {
+    return await this.repository.delete(id);
+  }
 }

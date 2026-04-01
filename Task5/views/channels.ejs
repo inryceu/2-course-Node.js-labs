@@ -23,7 +23,7 @@
             <% if (channels && channels.length> 0) { %>
                 <ul class="team-list">
                     <% channels.forEach(function(channel) { %>
-                        <li>
+                        <li style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
                             <a href="#">
                                 <span><strong>ID:</strong>
                                     <%= channel.id %>
@@ -32,12 +32,35 @@
                                     <%= channel.name %>
                                 </span>
                             </a>
+                            <% if (user && user.role==='ADMIN' ) { %>
+                                <div style="display:flex; gap:8px;">
+                                    <form action="/channels/<%= channel.id %>/update" method="POST"
+                                        style="display:flex; gap:6px; align-items:center; margin:0;">
+                                        <input type="text" name="name" value="<%= channel.name %>" required>
+                                        <button type="submit"
+                                            style="background:#1e90ff; color:white; padding:5px 10px;">Оновити</button>
+                                    </form>
+                                    <form action="/channels/<%= channel.id %>/delete" method="POST" style="margin:0;">
+                                        <button type="submit"
+                                            style="background:red; color:white; padding:5px 10px;">Видалити</button>
+                                    </form>
+                                </div>
+                                <% } %>
                         </li>
                         <% }); %>
                 </ul>
                 <% } else { %>
                     <p>No channels available at the moment.</p>
                     <% } %>
+
+                        <% if (user && user.role==='ADMIN' ) { %>
+                            <hr>
+                            <h3>Додати новий канал</h3>
+                            <form action="/channels" method="POST">
+                                <input type="text" name="name" placeholder="Назва каналу" required>
+                                <button type="submit">Створити</button>
+                            </form>
+                            <% } %>
         </main>
 
         <footer>

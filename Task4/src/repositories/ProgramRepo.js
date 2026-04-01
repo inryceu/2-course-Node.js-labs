@@ -31,56 +31,91 @@ export class ProgramRepo extends IRepository {
   }
 
   async create(data) {
-    const queryText = `
-      INSERT INTO programs (channel_id, show_id, start_time) 
-      VALUES ($1, $2, $3) RETURNING *
-    `;
-    const values = [data.channelId, data.showId, data.startTime];
-
+    const client = await pool.connect();
     try {
-      const result = await pool.query(queryText, values);
+      await client.query("BEGIN");
+
+      // Бізнес-валідація: перевіряємо існування каналу і передачі в одній транзакції
+      const channelCheck = await client.query(
+        "SELECT id FROM channels WHERE id = $1",
+        [data.channelId],
+      );
+      if (channelCheck.rows.length === 0) {
+        throw new Error(`Канал з id ${data.channelId} не існує`);
+      }
+
+      const showCheck = await client.query(
+        "SELECT id FROM shows WHERE id = $1",
+        [data.showId],
+      );
+      if (showCheck.rows.length === 0) {
+        throw new Error(`Передача з id ${data.showId} не існує`);
+      }
+
+      const result = await client.query(
+        "INSERT INTO programs (channel_id, show_id, start_time) VALUES ($1, $2, $3) RETURNING *",
+        [data.channelId, data.showId, data.startTime],
+      );
+
+      await client.query("COMMIT");
       return this._mapRowToProgram(result.rows[0]);
     } catch (error) {
-      console.error(
-        "Помилка створення програми (можливо, невірний channelId або showId):",
-        error,
-      );
+      await client.query("ROLLBACK");
+      console.error("Помилка створення програми (транзакцію відкочено):", error.message);
       throw error;
+    } finally {
+      client.release();
     }
   }
 
   async update(id, dtoPayload) {
-    const queryText = `
-      UPDATE programs
-      SET channel_id = COALESCE($1, channel_id),
-          show_id = COALESCE($2, show_id),
-          start_time = COALESCE($3, start_time)
-      WHERE id = $4 RETURNING *
-    `;
-    const values = [
-      dtoPayload.channelId,
-      dtoPayload.showId,
-      dtoPayload.startTime,
-      id,
-    ];
-
-    const result = await pool.query(queryText, values);
-
-    if (result.rowCount === 0) {
-      throw new Error("Програму для оновлення не знайдено");
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const queryText = `
+        UPDATE programs
+        SET channel_id = COALESCE($1, channel_id),
+            show_id = COALESCE($2, show_id),
+            start_time = COALESCE($3, start_time)
+        WHERE id = $4 RETURNING *
+      `;
+      const result = await client.query(queryText, [
+        dtoPayload.channelId,
+        dtoPayload.showId,
+        dtoPayload.startTime,
+        id,
+      ]);
+      if (result.rowCount === 0) {
+        throw new Error("Програму для оновлення не знайдено");
+      }
+      await client.query("COMMIT");
+      return this._mapRowToProgram(result.rows[0]);
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
     }
-    return this._mapRowToProgram(result.rows[0]);
   }
 
   async delete(id) {
-    const result = await pool.query(
-      "DELETE FROM programs WHERE id = $1 RETURNING id",
-      [id],
-    );
-
-    if (result.rowCount === 0) {
-      throw new Error("Програму для видалення не знайдено");
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await client.query(
+        "DELETE FROM programs WHERE id = $1 RETURNING id",
+        [id],
+      );
+      if (result.rowCount === 0) {
+        throw new Error("Програму для видалення не знайдено");
+      }
+      await client.query("COMMIT");
+      return true;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
     }
-    return true;
   }
 }

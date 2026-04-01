@@ -41,4 +41,35 @@ export class ShowController {
         .send("Internal Server Error during saving: " + error.message);
     }
   };
+
+  updateShow = async (req, res) => {
+    try {
+      const showId = Number(req.params.id);
+      const { title } = req.body;
+
+      if (!showId || !title) {
+        return res.status(400).send("Bad Request: id and title are required");
+      }
+
+      await this.showService.updateShow(showId, { title });
+      res.redirect("/shows");
+    } catch (error) {
+      res.status(400).send("Bad Request: " + error.message);
+    }
+  };
+
+  deleteShow = async (req, res) => {
+    try {
+      const showId = Number(req.params.id);
+
+      if (!showId) {
+        return res.status(400).send("Bad Request: id is required");
+      }
+
+      await this.showService.deleteShow(showId);
+      res.redirect("/shows");
+    } catch (error) {
+      res.status(400).send("Bad Request: " + error.message);
+    }
+  };
 }

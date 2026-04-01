@@ -14,9 +14,12 @@ export class AuthRepo extends IRepository {
     this.idCounter = 2;
   }
 
+  // Асинхронний з async/await
   async init() {
     if (this.users.length === 0) {
       try {
+        // Асинхронний з async/await -> дозволяє писати асинхронний код у вигляді синхронного, що покращує читабельність і спрощує обробку помилок за допомогою try/catch.
+        // await: призупиняє виконання функції до завершення промісу, що дозволяє обробляти асинхронні операції послідовно, не блокуючи event loop.
         const data = await fs.readFile(this.filePath, "utf-8");
         const parsed = JSON.parse(data);
         this.users = parsed.map((u) =>

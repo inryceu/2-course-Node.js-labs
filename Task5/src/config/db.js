@@ -1,17 +1,24 @@
+import "dotenv/config";
 import { Sequelize, DataTypes } from "sequelize";
 
 const connectionString = process.env.DATABASE_URL;
+const sslRequired = process.env.SSL_REQUIRED === "true";
+
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not set. Check Task5/.env");
+}
 
 export const sequelize = new Sequelize(connectionString, {
   dialect: "postgres",
   logging: false,
-
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
+  dialectOptions: sslRequired
+    ? {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      }
+    : undefined,
 });
 
 export const UserModel = sequelize.define(
